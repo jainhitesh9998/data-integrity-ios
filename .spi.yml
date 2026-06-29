@@ -1,0 +1,13 @@
+# Swift Package Index manifest — https://swiftpackageindex.com/swiftpackageindex/spimanifest
+#
+# Enables hosted DocC documentation for the DataIntegrity target on the package's
+# Swift Package Index page (built from the API doc comments).
+#
+# Note: .spi.yml cannot restrict the compatibility build matrix — SPI always
+# builds its full Swift-version x platform grid. This only configures docs.
+version: 1
+builder:
+  configs:
+    - platform: macos-spm
+      documentation_targets:
+        - DataIntegrity

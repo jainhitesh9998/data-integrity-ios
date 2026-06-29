@@ -1,0 +1,21 @@
+name: Release
+
+# Auto-create a GitHub Release whenever a semver tag (X.Y.Z) is pushed, so the
+# Releases page stays in sync with tags. Uses the built-in GITHUB_TOKEN — no PAT.
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag

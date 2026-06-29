@@ -16,7 +16,7 @@ import JSONLD
 /// ```
 public final class DataIntegrityClient: Sendable {
     /// Library version, surfaced for diagnostics / the React Native bridge.
-    public static let version = "0.2.0"
+    public static let version = "0.3.0"
 
     private let documentLoader: any JSONLDDocumentLoader
 
@@ -52,10 +52,11 @@ public final class DataIntegrityClient: Sendable {
     // MARK: - Verification
 
     /// Verify a credential's Data Integrity proof. Supports `ecdsa-sd-2023`
-    /// (derived), `ecdsa-rdfc-2019`, `eddsa-rdfc-2022`, and the legacy
-    /// `Ed25519Signature2020` suite. Never throws on a verification failure
-    /// — it returns `VerificationResult(verified: false, reason:)`. It only
-    /// throws for malformed input it cannot interpret at all.
+    /// (derived), `ecdsa-rdfc-2019` / `ecdsa-jcs-2019`, `eddsa-rdfc-2022` /
+    /// `eddsa-jcs-2022`, and the legacy `Ed25519Signature2020` suite. Never
+    /// throws on a verification failure — it returns
+    /// `VerificationResult(verified: false, reason:)`. It only throws for
+    /// malformed input it cannot interpret at all.
     public func verifyCredential(_ credential: String) async throws -> VerificationResult {
         let json = try JSONValue(parsing: credential)
         return await CredentialVerifier(loader: documentLoader).verify(json)

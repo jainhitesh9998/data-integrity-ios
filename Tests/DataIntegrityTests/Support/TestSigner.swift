@@ -102,6 +102,27 @@ enum TestSigner {
         return attach(proofConfig: proofConfig, signature: signature.rawRepresentation, to: unsecured)
     }
 
+    static func signEddsaJcs2022(
+        credential: JSONValue,
+        privateKey: Curve25519.Signing.PrivateKey,
+        created: String = "2026-01-01T00:00:00Z"
+    ) async throws -> JSONValue {
+        let unsecured = credential.removing("proof")
+        var proofConfig: JSONValue = .object([
+            "type": .string("DataIntegrityProof"),
+            "cryptosuite": .string("eddsa-jcs-2022"),
+            "created": .string(created),
+            "verificationMethod": .string(didKeyEd25519(privateKey.publicKey)),
+            "proofPurpose": .string("assertionMethod"),
+        ])
+        proofConfig["@context"] = credential["@context"]
+        // JCS canonicalization (RFC 8785) + Ed25519 — no JSON-LD / document loader.
+        let hashData = DigestUtil.sha256(DigestUtil.utf8(JCS.canonicalize(proofConfig)))
+            + DigestUtil.sha256(DigestUtil.utf8(JCS.canonicalize(unsecured)))
+        let signature = try privateKey.signature(for: hashData)
+        return attach(proofConfig: proofConfig, signature: Data(signature), to: unsecured)
+    }
+
     static func signEddsaRdfc2022(
         credential: JSONValue,
         privateKey: Curve25519.Signing.PrivateKey,

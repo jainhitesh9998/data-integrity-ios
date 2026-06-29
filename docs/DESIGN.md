@@ -13,7 +13,7 @@ proofs, and exposes RDF canonicalization as a standalone function.
 
 | Operation | Cryptosuites |
 |---|---|
-| **Verify** | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` / `ecdsa-jcs-2019` (P-256/P-384), `eddsa-rdfc-2022` (Ed25519), `Ed25519Signature2020` |
+| **Verify** | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` / `ecdsa-jcs-2019` (P-256/P-384), `eddsa-rdfc-2022` / `eddsa-jcs-2022` (Ed25519), `Ed25519Signature2020` |
 | **Derive** (selective disclosure) | `ecdsa-sd-2023` |
 | **Canonicalize** | RDFC-1.0 / URDNA2015 (a.k.a. `rdfc-2019`) |
 
@@ -59,6 +59,7 @@ hashes of those N-Quads.
 Sources/DataIntegrity/
   DataIntegrityClient.swift     Public facade: canonicalize / verifyCredential / deriveCredential
   JSON/JSONValue.swift          Value-typed JSON model (+ Any/JSONLD bridges, RFC8259)
+  JSON/JCS.swift                JSON Canonicalization Scheme (RFC 8785) for jcs suites
   DTO/VerificationResult.swift  { verified, cryptosuite?, reason? }
   Errors/DataIntegrityError.swift   Stable error codes
   JSONLD/
@@ -75,12 +76,13 @@ Sources/DataIntegrity/
   Suites/
     CredentialVerifier.swift    Routes a proof to its suite
     RdfcSuiteVerifier.swift     ecdsa-rdfc-2019 / eddsa-rdfc-2022 / Ed25519Signature2020
+    JcsSuiteVerifier.swift      ecdsa-jcs-2019 / eddsa-jcs-2022 (JCS / RFC 8785)
     Proof.swift                 Proof extraction
     EcdsaSd2023.swift           ecdsa-sd-2023 verify + derive orchestration
     Sd/                         selective-disclosure primitives (below)
   Vendor/RDFCLabels/            see §8
   Resources/contexts/           bundled @context JSON
-Tests/DataIntegrityTests/       67 tests (see §10)
+Tests/DataIntegrityTests/       70 tests (see §10)
 ```
 
 ### Selective-disclosure primitives (`Suites/Sd/`)
@@ -109,9 +111,11 @@ by the document loader (§7).
 3. `hashData = proofConfigHash ‖ docHash`.
 4. ECDSA verifies `hashData` (curve hashes it internally; P-384 ⇒ SHA-384); EdDSA verifies it directly.
 
-`ecdsa-jcs-2019` is identical except the document and proof config are
-canonicalized with **JCS** (RFC 8785, `JSON/JCS.swift`) instead of RDFC-1.0 — so
-it does no JSON-LD processing and needs no document loader.
+`ecdsa-jcs-2019` and `eddsa-jcs-2022` are identical except the document and proof
+config are canonicalized with **JCS** (RFC 8785, `JSON/JCS.swift`) instead of
+RDFC-1.0 — so they do no JSON-LD processing and need no document loader
+(`eddsa-jcs-2022` verifies with Ed25519, `ecdsa-jcs-2019` with ECDSA). Both run
+through `JcsSuiteVerifier`.
 
 ### verifyCredential — ecdsa-sd-2023 (derived)
 1. `parseDerivedProofValue` → `baseSignature`, ephemeral `publicKey`, `signatures`, `labelMap`, `mandatoryIndexes`.
@@ -208,7 +212,7 @@ low-S so high-S issuer signatures still verify.
 ### Install (Swift Package Manager)
 
 ```swift
-.package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.2.0"),
+.package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.3.0"),
 // target dependency:
 .product(name: "DataIntegrity", package: "data-integrity-ios"),
 ```
@@ -247,7 +251,7 @@ let derived = try await client.deriveCredential(
 
 ## 10. Testing
 
-`swift test` — 67 tests, offline against bundled contexts (plus a live `did:web`
+`swift test` — 70 tests, offline against bundled contexts (plus a live `did:web`
 test). Coverage ≈ 88% of the library's own code. Highlights:
 - canonicalization parity, round-trip verify for every suite, P-384, JWK decode;
 - full `ecdsa-sd-2023` issue → derive → verify lifecycle and optional-field shapes;

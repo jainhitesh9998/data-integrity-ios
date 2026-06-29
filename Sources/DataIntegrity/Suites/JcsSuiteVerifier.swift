@@ -1,22 +1,28 @@
 import Foundation
 
-/// Verifier for the `ecdsa-jcs-2019` cryptosuite. Identical to `ecdsa-rdfc-2019`
+/// Verifier for the JCS-based Data Integrity suites: `ecdsa-jcs-2019` (ECDSA,
+/// P-256/P-384) and `eddsa-jcs-2022` (Ed25519). Identical to the RDFC suites
 /// except the document and proof config are canonicalized with JCS (RFC 8785)
-/// instead of RDFC-1.0 — so it needs no JSON-LD processing or document loader.
+/// instead of RDFC-1.0 — so this path needs no JSON-LD processing or document
+/// loader.
 ///
 ///   proofConfigHash = SHA(JCS(proof options))   (proof options carry the doc @context)
 ///   documentHash    = SHA(JCS(document − proof))
 ///   hashData        = proofConfigHash ‖ documentHash
-///   verify proofValue over hashData with the issuer key (P-256 ⇒ SHA-256, P-384 ⇒ SHA-384)
+///   verify proofValue over hashData with the issuer key
+///   (ecdsa-jcs-2019: P-256 ⇒ SHA-256, P-384 ⇒ SHA-384; eddsa-jcs-2022: Ed25519, SHA-256)
 struct JcsSuiteVerifier {
     let keyResolver: KeyResolver
 
     func verify(credential: JSONValue, proof: DataIntegrityProof) async -> VerificationResult {
-        let suite = Cryptosuite.ecdsaJcs2019
+        let suite = proof.effectiveCryptosuite
         do {
             let key = try await keyResolver.resolve(verificationMethod: proof.verificationMethod)
-            if key.isEd25519 {
-                return .failure(suite, "ecdsa-jcs-2019 requires an ECDSA (P-256/P-384) key")
+
+            // Guard cryptosuite/key-type mismatch before doing any crypto.
+            let isEddsa = (suite == Cryptosuite.eddsaJcs2022)
+            if isEddsa != key.isEd25519 {
+                return .failure(suite, "cryptosuite \(suite) does not match key type \(key.curveName)")
             }
 
             let unsecured = credential.removing("proof")
@@ -32,7 +38,7 @@ struct JcsSuiteVerifier {
             let signature = try Multibase.decode(proof.proofValue)
             return key.isValidSignature(signature, for: hashData)
                 ? .success(suite)
-                : .failure(suite, "ecdsa-jcs-2019 signature did not verify")
+                : .failure(suite, "\(suite) signature did not verify")
         } catch let error as DataIntegrityError {
             return .failure(suite, error.message)
         } catch {

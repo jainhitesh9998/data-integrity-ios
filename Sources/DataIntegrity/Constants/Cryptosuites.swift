@@ -5,6 +5,7 @@ enum Cryptosuite {
     static let ecdsaRdfc2019 = "ecdsa-rdfc-2019"
     static let ecdsaJcs2019 = "ecdsa-jcs-2019"
     static let eddsaRdfc2022 = "eddsa-rdfc-2022"
+    static let eddsaJcs2022 = "eddsa-jcs-2022"
     static let ed25519Signature2020 = "Ed25519Signature2020"
 
     /// The Ed25519Signature2020 suite canonicalizes its proof options under

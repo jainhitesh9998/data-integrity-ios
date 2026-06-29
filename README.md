@@ -24,7 +24,7 @@ function. Built to plug into the Inji Wallet (React Native) iOS app the same way
 
 | Capability | Cryptosuites |
 |---|---|
-| **Verify** a credential's proof | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` / `ecdsa-jcs-2019` (P-256/P-384), `eddsa-rdfc-2022` (Ed25519), `Ed25519Signature2020` |
+| **Verify** a credential's proof | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` / `ecdsa-jcs-2019` (P-256/P-384), `eddsa-rdfc-2022` / `eddsa-jcs-2022` (Ed25519), `Ed25519Signature2020` |
 | **Derive** a selectively-disclosed credential | `ecdsa-sd-2023` |
 | **Canonicalize** a JSON-LD document | RDFC-1.0 / URDNA2015 (rdfc-2019) |
 
@@ -42,7 +42,7 @@ function. Built to plug into the Inji Wallet (React Native) iOS app the same way
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.2.0"),
+    .package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.3.0"),
 ],
 targets: [
     .target(name: "YourTarget", dependencies: [
@@ -86,6 +86,7 @@ DataIntegrityClient                       ── public facade
 ├─ Suites/
 │  ├─ CredentialVerifier                   ── routes by cryptosuite
 │  ├─ RdfcSuiteVerifier                    ── ecdsa-rdfc-2019 / eddsa-rdfc-2022 / Ed25519Signature2020
+│  ├─ JcsSuiteVerifier                     ── ecdsa-jcs-2019 / eddsa-jcs-2022 (JCS / RFC 8785)
 │  └─ EcdsaSd2023 (+ Sd/*)                 ── verify + derive: proofValue CBOR, skolemize, selectJsonLd,
 │                                             HMAC label map, grouping, canonical CBOR
 └─ Vendor/RDFCLabels                       ── see "Dependencies" below
@@ -114,11 +115,12 @@ Verification and standalone canonicalization use the upstream package directly.
 swift test
 ```
 
-20 tests, all offline against the bundled contexts:
+The full suite runs offline against the bundled contexts:
 
 - **Canonicalization** parity on inline-context and blank-node documents.
-- **Round-trip verify** for `ecdsa-rdfc-2019`, `eddsa-rdfc-2022`,
-  `Ed25519Signature2020` (sign with a fresh key → verify; tamper → fail).
+- **Round-trip verify** for `ecdsa-rdfc-2019`, `ecdsa-jcs-2019`,
+  `eddsa-rdfc-2022`, `eddsa-jcs-2022`, `Ed25519Signature2020` (sign with a fresh
+  key → verify; tamper → fail).
 - **`ecdsa-sd-2023` verify** of a self-generated derived proof; tamper / wrong
   key / malformed proof value → fail.
 - **`ecdsa-sd-2023` full lifecycle**: issue base proof → derive a selective

@@ -22,6 +22,25 @@ function. Built to plug into the Inji Wallet (React Native) iOS app the same way
   `publicKeyMultibase` and `publicKeyJwk`.
 - ECDSA signatures are normalized to low-S, so high-S issuer signatures verify.
 
+## Installation
+
+**Swift Package Manager** — add to your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.1.0"),
+],
+targets: [
+    .target(name: "YourTarget", dependencies: [
+        .product(name: "DataIntegrity", package: "data-integrity-ios"),
+    ]),
+]
+```
+
+**Xcode** — *File ▸ Add Package Dependencies…*, enter
+`https://github.com/jainhitesh9998/data-integrity-ios`, and add the
+**`DataIntegrity`** library.
+
 ## Public API
 
 ```swift

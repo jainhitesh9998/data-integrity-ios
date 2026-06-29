@@ -58,4 +58,36 @@ final class RealWorldInteropTests: XCTestCase {
         let derived = try JSONValue(parsing: derivedJSON)
         XCTAssertNotNil(derived["credentialSubject"]?["name"])
     }
+
+    // MARK: - Negative: tamper the REAL credential, the issuer's signature must reject it
+
+    /// Tweak a date on the real, issuer-signed credential — the real
+    /// `ecdsa-rdfc-2019` signature must no longer verify.
+    func testRealEcdsaRdfc2019TamperedDateFails() async throws {
+        var obj = try XCTUnwrap(isolatingProof(try loadCredential(), cryptosuite: "ecdsa-rdfc-2019").objectValue)
+        XCTAssertNotNil(obj["validFrom"], "expected a validFrom to tamper")
+        obj["validFrom"] = .string("2024-06-01T00:00:00Z")  // issuer signed 2023-01-01
+
+        let result = try await DataIntegrityClient(documentLoader: loader)
+            .verifyCredential(try JSONValue.object(obj).serialized())
+        XCTAssertFalse(result.verified, "a tampered real credential must not verify")
+    }
+
+    /// Derive from the real `ecdsa-sd-2023` base proof, then tamper the disclosed
+    /// name — the per-statement signature must reject it.
+    func testRealEcdsaSd2023DerivedThenTamperedFails() async throws {
+        let base = try isolatingProof(try loadCredential(), cryptosuite: "ecdsa-sd-2023")
+        let client = DataIntegrityClient(documentLoader: loader)
+        let derivedJSON = try await client.deriveCredential(
+            baseCredential: try base.serialized(),
+            selectivePointers: ["/credentialSubject/name"])
+
+        var obj = try XCTUnwrap(try JSONValue(parsing: derivedJSON).objectValue)
+        var subject = try XCTUnwrap(obj["credentialSubject"]?.objectValue)
+        subject["name"] = .string("Tampered Name")
+        obj["credentialSubject"] = .object(subject)
+
+        let result = try await client.verifyCredential(try JSONValue.object(obj).serialized())
+        XCTAssertFalse(result.verified, "a tampered derived credential must not verify")
+    }
 }

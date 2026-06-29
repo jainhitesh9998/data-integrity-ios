@@ -1,0 +1,41 @@
+name: Deploy DID document to GitHub Pages
+
+# Publishes the `docs/` directory (which contains the did:web DID document
+# `did.json`) to GitHub Pages, served at:
+#   https://jainhitesh9998.github.io/data-integrity-ios/did.json
+# i.e. the resolution target for did:web:jainhitesh9998.github.io:data-integrity-ios
+#
+# `configure-pages` with `enablement: true` turns GitHub Pages on automatically
+# (build type = GitHub Actions) on the first run, so no manual Settings change
+# is needed.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4

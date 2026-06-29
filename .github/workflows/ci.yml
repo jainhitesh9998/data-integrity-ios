@@ -24,7 +24,15 @@ jobs:
         run: swift --version
 
       - name: Run tests (macOS) with coverage
-        run: swift test --enable-code-coverage
+        # --parallel is required for SwiftPM to emit the xUnit (JUnit) report.
+        run: swift test --parallel --enable-code-coverage --xunit-output test-results.xml
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: test-results.xml
 
       - name: Export coverage (lcov)
         run: |

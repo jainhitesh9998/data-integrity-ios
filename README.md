@@ -5,6 +5,9 @@
 [![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fjainhitesh9998%2Fdata-integrity-ios%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/jainhitesh9998/data-integrity-ios)
 [![codecov](https://codecov.io/gh/jainhitesh9998/data-integrity-ios/branch/main/graph/badge.svg)](https://codecov.io/gh/jainhitesh9998/data-integrity-ios)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![W3C rdf-canon](https://img.shields.io/badge/W3C_rdf--canon-63%2F64-brightgreen.svg)](#standard-conformance-suites)
+[![JCS RFC 8785](https://img.shields.io/badge/JCS_RFC_8785-6%2F6-brightgreen.svg)](#standard-conformance-suites)
+[![Wycheproof](https://img.shields.io/badge/Wycheproof-ECDSA_%26_Ed25519-brightgreen.svg)](#standard-conformance-suites)
 
 A Swift library to **verify** and **derive** W3C Verifiable Credential Data
 Integrity proofs — with first-class support for the **`ecdsa-sd-2023`**

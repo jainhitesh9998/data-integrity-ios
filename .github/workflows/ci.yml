@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -29,9 +30,16 @@ jobs:
         run: |
           BIN=$(find .build -path '*data-integrity-iosPackageTests.xctest/Contents/MacOS/*' -type f | head -1)
           PROF=$(find .build -name 'default.profdata' | head -1)
+          echo "binary=$BIN"
+          echo "profdata=$PROF"
+          if [ -z "$BIN" ] || [ -z "$PROF" ]; then echo "::error::coverage inputs not found"; exit 1; fi
           xcrun llvm-cov export -format=lcov "$BIN" -instr-profile "$PROF" \
             -ignore-filename-regex='(\.build|/Tests/|/Vendor/)' > coverage.lcov
-          echo "lcov lines: $(wc -l < coverage.lcov)"
+          # llvm-cov emits absolute SF: paths; make them repo-relative so Codecov
+          # can map them to files in the repository.
+          sed -i '' "s#${PWD}/##g" coverage.lcov
+          echo "lcov bytes: $(wc -c < coverage.lcov)"
+          grep -m1 '^SF:' coverage.lcov || echo "::warning::no SF entries in coverage.lcov"
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
@@ -39,6 +47,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.lcov
           fail_ci_if_error: false
+          verbose: true
 
       - name: Build for iOS
         run: xcodebuild -scheme data-integrity-ios -destination 'generic/platform=iOS' build

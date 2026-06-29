@@ -1,0 +1,21 @@
+# Codecov configuration. Coverage is measured on the library's own code only;
+# the vendored canonicalizer and tests are excluded (the CI lcov export already
+# filters them, and this keeps the Codecov view consistent).
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+
+ignore:
+  - "Tests/**"
+  - "Sources/DataIntegrity/Vendor/**"
+
+comment:
+  layout: "reach, diff, files"
+  require_changes: true

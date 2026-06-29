@@ -1,0 +1,65 @@
+name: Conformance
+
+# Daily conformance report against the bundled standard test vectors
+# (W3C rdf-canon, RFC 8785 JCS, Project Wycheproof). The scores are written to
+# the workflow run's job summary and uploaded as an artifact — nothing is
+# committed or pushed back to the repo.
+#
+# Note: the conformance tests also run on every push as part of the normal CI
+# (`swift test`); this scheduled job exists to surface a dated, scored report.
+on:
+  schedule:
+    - cron: '0 6 * * *'      # 06:00 UTC daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: conformance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  conformance:
+    name: Conformance suites
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Swift toolchain
+        run: swift --version
+
+      - name: Run conformance suites
+        id: run
+        run: |
+          set -o pipefail
+          swift test --filter Conformance 2>&1 | tee conformance.log
+
+      - name: Write scored report to job summary
+        if: ${{ !cancelled() }}
+        run: |
+          {
+            echo "## Conformance report"
+            echo ""
+            echo "_$(date -u '+%Y-%m-%d %H:%M UTC') · commit \`$(echo "$GITHUB_SHA" | cut -c1-7)\`_"
+            echo ""
+            echo "| Suite | Scores |"
+            echo "|---|---|"
+            grep -E '^\[' conformance.log \
+              | awk '{ p=index($0,"]"); printf "| **%s** | %s |\n", substr($0,2,p-2), substr($0,p+2) }' \
+              || true
+            echo ""
+            if [ "${{ steps.run.outcome }}" = "success" ]; then
+              echo "✅ All conformance assertions passed."
+            else
+              echo "❌ Conformance reported failures — see the \`conformance-report\` artifact."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload conformance log
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: conformance-report
+          path: conformance.log
+          retention-days: 30

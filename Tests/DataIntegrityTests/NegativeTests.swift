@@ -182,4 +182,35 @@ final class NegativeTests: XCTestCase {
             XCTAssertEqual(error.code, .invalidPointer)
         }
     }
+
+    // MARK: - Malicious holder: tamper the BASE credential, then derive
+
+    func testSdTamperBaseMandatoryThenDeriveFails() async throws {
+        let issuerKey = P256.Signing.PrivateKey()
+        let ephemeralKey = P256.Signing.PrivateKey()
+        // Issuer signs the ORIGINAL credential (fullName is mandatory).
+        let base = try await TestSdIssuer.issueBaseProof(
+            credential: try credential(), issuerKey: issuerKey, ephemeralKey: ephemeralKey,
+            mandatoryPointers: ["/issuer", "/credentialSubject/fullName"], loader: loader)
+        // Holder edits the mandatory fullName in their own base credential, then derives.
+        let tamperedBase = setSubjectField(base, "fullName", .string("Mallory"))
+        let derivedJSON = try await client.deriveCredential(
+            baseCredential: try tamperedBase.serialized(), selectivePointers: ["/credentialSubject/email"])
+        let result = try await client.verifyCredential(derivedJSON)
+        XCTAssertFalse(result.verified, "tampered mandatory data must be caught by the base signature")
+    }
+
+    func testSdTamperBaseSelectiveThenDiscloseFails() async throws {
+        let issuerKey = P256.Signing.PrivateKey()
+        let ephemeralKey = P256.Signing.PrivateKey()
+        let base = try await TestSdIssuer.issueBaseProof(
+            credential: try credential(), issuerKey: issuerKey, ephemeralKey: ephemeralKey,
+            mandatoryPointers: ["/issuer"], loader: loader)
+        // Holder edits a selectively-disclosable field, then discloses it.
+        let tamperedBase = setSubjectField(base, "email", .string("evil@example.org"))
+        let derivedJSON = try await client.deriveCredential(
+            baseCredential: try tamperedBase.serialized(), selectivePointers: ["/credentialSubject/email"])
+        let result = try await client.verifyCredential(derivedJSON)
+        XCTAssertFalse(result.verified, "tampered disclosed data must be caught by its per-statement signature")
+    }
 }

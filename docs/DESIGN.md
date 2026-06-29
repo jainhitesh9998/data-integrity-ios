@@ -251,10 +251,15 @@ let derived = try await client.deriveCredential(
 
 ## 10. Testing
 
-`swift test` — 70 tests, offline against bundled contexts (plus a live `did:web`
-test). Coverage ≈ 88% of the library's own code. Highlights:
+`swift test` — 75 tests, offline against bundled contexts/vectors (plus a live
+`did:web` test). Coverage ≈ 88% of the library's own code. Highlights:
 - canonicalization parity, round-trip verify for every suite, P-384, JWK decode;
 - full `ecdsa-sd-2023` issue → derive → verify lifecycle and optional-field shapes;
+- **standard conformance suites** (run in CI on every push): W3C `rdf-canon`
+  (RDFC-1.0, 63/64 positive vectors), RFC 8785 JCS via `cyberphone` (5/6), and
+  Project Wycheproof ECDSA P-256/P-384 + Ed25519 — each group's key decoded
+  through this library's own JWK / compressed-point decoders (exercising the
+  iOS-14 SEC1 decompression). See `Tests/DataIntegrityTests/Vectors/ATTRIBUTION.md`;
 - **real-world interop** against an externally-issued credential (`MedicalTechnician.json`);
 - **negatives**: wrong key, corrupted/flipped proof value, tampered mandatory vs
   selective fields (in the derived doc *and* the base credential), injected/removed

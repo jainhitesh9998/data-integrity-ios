@@ -40,7 +40,12 @@ let package = Package(
         ),
         .testTarget(
             name: "DataIntegrityTests",
-            dependencies: ["DataIntegrity"],
+            dependencies: [
+                "DataIntegrity",
+                // Imported directly by the RDFC-1.0 conformance tests to run the
+                // W3C rdf-canon suite (N-Quads in → canonical N-Quads out).
+                .product(name: "RDFCanonize", package: "swift-rdf-canonize"),
+            ],
             resources: [
                 .copy("Vectors"),
             ]

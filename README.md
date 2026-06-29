@@ -133,8 +133,30 @@ The full suite runs offline against the bundled contexts:
 `Samples/` holds generated, verifiable sample VCs for each suite (including a
 real selectively-disclosed `ecdsa-sd-2023` credential).
 
-> Remaining nice-to-have: run the broader [W3C vc-di-ecdsa test suite](https://github.com/w3c/vc-di-ecdsa-test-suite)
-> for wider coverage.
+### Standard conformance suites
+
+Run as part of `swift test` (and CI on every push) against the **official
+upstream vectors**, bundled under `Tests/DataIntegrityTests/Vectors/`
+(see [`Vectors/ATTRIBUTION.md`](Tests/DataIntegrityTests/Vectors/ATTRIBUTION.md)):
+
+- **RDF Dataset Canonicalization (RDFC-1.0)** — the W3C
+  [`rdf-canon`](https://github.com/w3c/rdf-canon) suite (`tests/rdfc10`): **63/64**
+  positive vectors pass (`test075`, a blank-node symmetry case, is a known
+  upstream `swift-rdf-canonize` limitation, documented + excluded).
+- **JSON Canonicalization Scheme (RFC 8785)** — the
+  [`cyberphone/json-canonicalization`](https://github.com/cyberphone/json-canonicalization)
+  reference data, through this library's `JCS`: **5/6** (`values.json` excludes one
+  extreme-decimal float, e.g. `1e-27`, that Foundation's `JSONSerialization` does
+  not round-trip correctly — a parser limitation, not the JCS logic).
+- **ECDSA P-256 / P-384 & Ed25519** — [Project Wycheproof](https://github.com/C2SP/wycheproof)
+  signature vectors (IEEE-P1363 + Ed25519). Each group's key is decoded through
+  this library's **JWK + compressed-point/Multikey** decoders (validating the
+  iOS-14 SEC1 decompression on every key); all `valid` signatures must verify and
+  all `invalid` ones must be rejected. Non-canonical-S "malleability" vectors are
+  tolerated by design (the library normalizes low-S).
+
+> Remaining nice-to-have: the endpoint-based [W3C vc-di-ecdsa test suite](https://github.com/w3c/vc-di-ecdsa-test-suite)
+> for full cryptosuite interop.
 
 ## React Native integration
 

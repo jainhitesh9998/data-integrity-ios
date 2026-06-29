@@ -35,11 +35,20 @@ jobs:
           if [ -z "$BIN" ] || [ -z "$PROF" ]; then echo "::error::coverage inputs not found"; exit 1; fi
           xcrun llvm-cov export -format=lcov "$BIN" -instr-profile "$PROF" \
             -ignore-filename-regex='(\.build|/Tests/|/Vendor/)' > coverage.lcov
-          # llvm-cov emits absolute SF: paths; make them repo-relative so Codecov
-          # can map them to files in the repository.
-          sed -i '' "s#${PWD}/##g" coverage.lcov
+          # llvm-cov emits ABSOLUTE SF: paths. Rewrite everything up to and
+          # including ".../Sources/" -> "Sources/" so the paths are repo-relative
+          # regardless of the runner's workspace prefix (symlinks etc.). Codecov
+          # needs repo-relative paths to map files; otherwise it shows nothing.
+          sed -i '' -E 's#^SF:.*/Sources/#SF:Sources/#' coverage.lcov
           echo "lcov bytes: $(wc -c < coverage.lcov)"
-          grep -m1 '^SF:' coverage.lcov || echo "::warning::no SF entries in coverage.lcov"
+          echo "--- sample SF entries (should start with Sources/) ---"
+          grep '^SF:' coverage.lcov | head -3 || echo "::warning::no SF entries in coverage.lcov"
+
+      - name: Upload coverage.lcov as artifact (for inspection)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: coverage.lcov
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

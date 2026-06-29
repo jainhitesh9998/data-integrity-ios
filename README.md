@@ -6,12 +6,6 @@
 [![codecov](https://codecov.io/gh/jainhitesh9998/data-integrity-ios/branch/main/graph/badge.svg)](https://codecov.io/gh/jainhitesh9998/data-integrity-ios)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> The Swift and Platforms badges are static snapshots so they render immediately;
-> once listed on the [Swift Package Index](https://swiftpackageindex.com/add-a-package)
-> you can swap them for the live SPI badges (via the package page's "Do you
-> maintain this package?" link). **Coverage** is reported live by Codecov and
-> populates after the repo is connected at codecov.io (CI uploads `coverage.lcov`).
-
 A Swift library to **verify** and **derive** W3C Verifiable Credential Data
 Integrity proofs — with first-class support for the **`ecdsa-sd-2023`**
 selective-disclosure cryptosuite — plus a standalone **RDF canonicalization**

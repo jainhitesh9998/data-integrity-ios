@@ -12,6 +12,11 @@ name: Deploy DID document to GitHub Pages
 on:
   push:
     branches: [main]
+    # Only redeploy when the published content (or this workflow) changes —
+    # avoids a Pages deploy (and deployment races) on every unrelated commit.
+    paths:
+      - "docs/**"
+      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -19,9 +24,11 @@ permissions:
   pages: write
   id-token: write
 
+# One Pages deployment at a time; cancel a superseded in-progress run so a
+# newer commit doesn't collide with an older deploy ("in progress deployment").
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:

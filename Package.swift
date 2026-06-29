@@ -1,8 +1,8 @@
 // swift-tools-version: 6.0
 // DataIntegrity — W3C Verifiable Credential Data Integrity verification & selective
-// disclosure (ecdsa-sd-2023, ecdsa-rdfc-2019, eddsa-rdfc-2022, Ed25519Signature2020) for
-// Swift / iOS, designed to plug into the Inji Wallet (React Native) the same way
-// inji-vci-client-ios-swift does.
+// disclosure (ecdsa-sd-2023, ecdsa-rdfc-2019/jcs-2019, eddsa-rdfc-2022/jcs-2022,
+// Ed25519Signature2020) for Swift / iOS, with a small async String API that
+// embeds in any iOS/macOS app or bridges to React Native.
 import PackageDescription
 
 let package = Package(

@@ -9,8 +9,9 @@
 A Swift library to **verify** and **derive** W3C Verifiable Credential Data
 Integrity proofs — with first-class support for the **`ecdsa-sd-2023`**
 selective-disclosure cryptosuite — plus a standalone **RDF canonicalization**
-function. Built to plug into the Inji Wallet (React Native) iOS app the same way
-`inji-vci-client-ios-swift` does.
+function. It exposes a small, bridge-friendly API (JSON in/out as `String`,
+`async/await`, one `DataIntegrityError` type), so it drops into any iOS/macOS
+app and wraps cleanly in a React Native (or other) native module.
 
 📖 **Design & integration guide:** [`docs/DESIGN.md`](docs/DESIGN.md) · **React Native:** [`docs/REACT_NATIVE_INTEGRATION.md`](docs/REACT_NATIVE_INTEGRATION.md)
 
@@ -138,8 +139,8 @@ real selectively-disclosed `ecdsa-sd-2023` credential).
 ## React Native integration
 
 See [`docs/REACT_NATIVE_INTEGRATION.md`](docs/REACT_NATIVE_INTEGRATION.md) for
-wiring this into the Inji Wallet (the native `DataIntegrityCanonize` bridge and
-the JS routing for `ecdsa-sd-2023`).
+wiring this into a React Native iOS app — a native bridge module exposing the
+three methods to JS — with the Inji Wallet as the worked example.
 
 ## Platforms
 

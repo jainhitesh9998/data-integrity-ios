@@ -1,8 +1,11 @@
-# Integrating `DataIntegrity` into the Inji Wallet (React Native)
+# Integrating `DataIntegrity` into a React Native iOS app
 
-This guide wires the `DataIntegrity` Swift package into the Inji Wallet
-React Native app (iOS). It mirrors how `inji-vci-client-ios-swift` is integrated:
+This guide wires the `DataIntegrity` Swift package into a React Native iOS app:
 the library is a Swift Package, exposed to JS through a thin `RN…Module` bridge.
+
+The concrete steps below use the **Inji Wallet** as the worked example (target
+`Inji`, project `ios/Inji.xcodeproj`) — substitute your own app's target and
+project names wherever they appear.
 
 What you get:
 
@@ -34,8 +37,9 @@ What you get:
 The wallet already consumes SPM packages directly in `ios/Inji.xcodeproj`
 (`securekeystore`, `pixelpass`, `VCIClient`, `OpenID4VP`, …). This one was added
 the same way — as a **local** package (`../../lib`) for development. For release,
-publish it (e.g. `github.com/inji/inji-data-integrity-ios-swift`) and replace the
-local reference with an exact-version remote one, matching the other Inji packages.
+switch to the published package
+(`https://github.com/jainhitesh9998/data-integrity-ios`) and replace the local
+reference with an exact-version remote one, matching the app's other packages.
 
 **Open the workspace**
 
@@ -48,9 +52,9 @@ Add Local…* and choose the `lib/` folder (this package). Then select the **Inj
 target ▸ *Frameworks, Libraries, and Embedded Content* and confirm
 `DataIntegrity` is listed.
 
-**Remote package (CI / release).** Publish the package (e.g.
-`https://github.com/inji/inji-data-integrity-ios-swift`) and add it via *Add
-Package Dependencies…* with an **exact version** pin, matching the other Inji
+**Remote package (CI / release).** Use the published package
+(`https://github.com/jainhitesh9998/data-integrity-ios`) and add it via *Add
+Package Dependencies…* with an **exact version** pin, matching the app's other
 packages.
 
 > Toolchain: the package is `swift-tools-version: 6.0`. Xcode 15+/26 builds it

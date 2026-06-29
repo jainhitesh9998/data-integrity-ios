@@ -1,7 +1,7 @@
 # DataIntegrity — Design & Integration Guide
 
 How the library is structured, how each operation works, and how to integrate it
-into your own app. For the React Native / Inji Wallet bridge specifically, see
+into your own app. For the React Native bridge specifically, see
 [`REACT_NATIVE_INTEGRATION.md`](REACT_NATIVE_INTEGRATION.md).
 
 ---

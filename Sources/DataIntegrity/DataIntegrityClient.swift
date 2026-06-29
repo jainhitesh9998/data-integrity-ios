@@ -5,9 +5,10 @@ import JSONLD
 /// operations: RDF canonicalization, proof verification, and ecdsa-sd-2023
 /// selective-disclosure derivation.
 ///
-/// Mirrors the `inji-vci-client-ios-swift` convention: a `public` class
-/// constructed plainly, `async throws` methods, JSON crossing the boundary
-/// as `String`, and a single `DataIntegrityError` error type.
+/// A small, bridge-friendly binding convention: a `public` class constructed
+/// plainly, `async throws` methods, JSON crossing the boundary as `String`,
+/// and a single `DataIntegrityError` error type — easy to wrap in a React
+/// Native (or other) native module, or call directly from Swift.
 ///
 /// ```swift
 /// let client = DataIntegrityClient()

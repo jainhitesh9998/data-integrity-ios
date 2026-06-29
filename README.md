@@ -1,5 +1,7 @@
 # DataIntegrity
 
+[![CI](https://github.com/jainhitesh9998/data-integrity-ios/actions/workflows/ci.yml/badge.svg)](https://github.com/jainhitesh9998/data-integrity-ios/actions/workflows/ci.yml)
+
 A Swift library to **verify** and **derive** W3C Verifiable Credential Data
 Integrity proofs — with first-class support for the **`ecdsa-sd-2023`**
 selective-disclosure cryptosuite — plus a standalone **RDF canonicalization**

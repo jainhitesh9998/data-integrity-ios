@@ -1,0 +1,21 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/multikey/v1"
+  ],
+  "id": "did:web:jainhitesh9998.github.io:data-integrity-ios",
+  "verificationMethod": [
+    {
+      "id": "did:web:jainhitesh9998.github.io:data-integrity-ios#key-1",
+      "type": "Multikey",
+      "controller": "did:web:jainhitesh9998.github.io:data-integrity-ios",
+      "publicKeyMultibase": "zDnaeQa8zprPhHA7Yuxcgc2Uh6XNQgaKjmFZE4EaA9fk5svmJ"
+    }
+  ],
+  "assertionMethod": [
+    "did:web:jainhitesh9998.github.io:data-integrity-ios#key-1"
+  ],
+  "authentication": [
+    "did:web:jainhitesh9998.github.io:data-integrity-ios#key-1"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "@context" : [
+    "https://www.w3.org/ns/credentials/v2",
+    {
+      "address" : "ex:address",
+      "city" : "ex:city",
+      "ex" : "https://example.org/vocab#",
+      "fullName" : "ex:fullName",
+      "postalCode" : "ex:postalCode",
+      "program" : "ex:program"
+    }
+  ],
+  "credentialSubject" : {
+    "address" : {
+      "city" : "Bengaluru",
+      "postalCode" : "560001"
+    },
+    "fullName" : "Alice Smith",
+    "id" : "did:example:alice",
+    "program" : "BSc Computer Science"
+  },
+  "id" : "urn:uuid:0c1f9b2e-7a4d-4c2b-9b1a-2f3e4d5c6a7b",
+  "issuer" : "did:example:university",
+  "proof" : {
+    "created" : "2026-01-01T00:00:00Z",
+    "cryptosuite" : "eddsa-rdfc-2022",
+    "proofPurpose" : "assertionMethod",
+    "proofValue" : "z5QD7bnRN2LhXiG1JDUCDxEyLNGrAMQG7d83F5NutuWHe2YrSj8jDgNJ6zksjUPvk8YCKyqpQMCnFody3eHryb725",
+    "type" : "DataIntegrityProof",
+    "verificationMethod" : "did:key:z6MkqGC3nWZhYieEVTVDKW5v588CiGfsDSmRVG9ZwwWTvLSK"
+  },
+  "type" : [
+    "VerifiableCredential"
+  ],
+  "validFrom" : "2026-01-01T00:00:00Z"
+}

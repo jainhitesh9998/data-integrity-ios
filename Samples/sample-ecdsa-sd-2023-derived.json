@@ -1,0 +1,34 @@
+{
+  "@context" : [
+    "https://www.w3.org/ns/credentials/v2",
+    {
+      "address" : "ex:address",
+      "city" : "ex:city",
+      "ex" : "https://example.org/vocab#",
+      "fullName" : "ex:fullName",
+      "postalCode" : "ex:postalCode",
+      "program" : "ex:program"
+    }
+  ],
+  "credentialSubject" : {
+    "address" : {
+      "city" : "Bengaluru",
+      "postalCode" : "560001"
+    },
+    "id" : "did:example:alice"
+  },
+  "id" : "urn:uuid:0c1f9b2e-7a4d-4c2b-9b1a-2f3e4d5c6a7b",
+  "issuer" : "did:example:university",
+  "proof" : {
+    "created" : "2026-01-01T00:00:00Z",
+    "cryptosuite" : "ecdsa-sd-2023",
+    "proofPurpose" : "assertionMethod",
+    "proofValue" : "u2V0BhVhAl1zUh2dPzTI28KuR7qvbd9wlNS6dN_XWuTqPTDvahVguzDfFa_G8SJM9eYafefaHOn3oEzkr4-0j6BES7Pq_31gjgCQDUadYCDOJjqGxg8vXNQpAmQeMbvHB4Y6XDNdoMDXyXn2EWECQORQ3jq96FwZDnzOziKE8MJ_phfy8UVYpDF5q01EVeJc--MBEzruSZy9CKLnPeMqKyL2wjAeFn6ACDIEPFdw5WEB157OBXjh5qeQM09hFy-RN3bO5TJ0s_Akg48u0KYqAhSnpjqQUP5ubMiygIu3MY1hpsjwCxS388nTyiS3Mofx_WEBbr9qsYULd4KFp1ipfecU-c-Eooy2hNUVlTtCjibYR_59MwcFDzNy3vCwjQpqR-xXHdrFcQw-jl28pFROF1UlGWEDK3IZ-Kv1gLR7paj9LjiJSEALVmtezwCo7ssnAdzo6qVqEvF-fQpFV1eWz3I1SNAbWuwZ3uBlM6MZqxGfjwqAKoQBYII0tywhjHYwGJaBrT1-DG-LNNoKmqgE-tZGRUInlAroNgwEDBA",
+    "type" : "DataIntegrityProof",
+    "verificationMethod" : "did:key:zDnaeQa8zprPhHA7Yuxcgc2Uh6XNQgaKjmFZE4EaA9fk5svmJ"
+  },
+  "type" : [
+    "VerifiableCredential"
+  ],
+  "validFrom" : "2026-01-01T00:00:00Z"
+}

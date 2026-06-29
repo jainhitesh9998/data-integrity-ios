@@ -1,0 +1,36 @@
+{
+  "@context" : [
+    "https://www.w3.org/ns/credentials/v2",
+    {
+      "address" : "ex:address",
+      "city" : "ex:city",
+      "ex" : "https://example.org/vocab#",
+      "fullName" : "ex:fullName",
+      "postalCode" : "ex:postalCode",
+      "program" : "ex:program"
+    }
+  ],
+  "credentialSubject" : {
+    "address" : {
+      "city" : "Bengaluru",
+      "postalCode" : "560001"
+    },
+    "fullName" : "Alice Smith",
+    "id" : "did:example:alice",
+    "program" : "BSc Computer Science"
+  },
+  "id" : "urn:uuid:0c1f9b2e-7a4d-4c2b-9b1a-2f3e4d5c6a7b",
+  "issuer" : "did:example:university",
+  "proof" : {
+    "created" : "2026-01-01T00:00:00Z",
+    "cryptosuite" : "ecdsa-sd-2023",
+    "proofPurpose" : "assertionMethod",
+    "proofValue" : "u2V0AhVhAl1zUh2dPzTI28KuR7qvbd9wlNS6dN_XWuTqPTDvahVguzDfFa_G8SJM9eYafefaHOn3oEzkr4-0j6BES7Pq_31gjgCQDUadYCDOJjqGxg8vXNQpAmQeMbvHB4Y6XDNdoMDXyXn1YICoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqhlhAkDkUN46vehcGQ58zs4ihPDCf6YX8vFFWKQxeatNRFXiXPvjARM67kmcvQii5z3jKisi9sIwHhZ-gAgyBDxXcOVhAlY8TA3ImA0124ORw9NjPbtOba8S3uSch1CDM8ZOG1q43QiVc5N-9APYUoiGRXeOdN-b-Ri7_GclKrWkAUj8kIFhAiq2EoCqw07HPi1iG6rH4t3VmUQdRa4kVAyhtIZEuehhkUlzKzQEGR3kIgKqAl91EKy2D2ynftAoFA4WC_5hZ1lhAdeezgV44eankDNPYRcvkTd2zuUydLPwJIOPLtCmKgIUp6Y6kFD-bmzIsoCLtzGNYabI8AsUt_PJ08oktzKH8f1hAW6_arGFC3eChadYqX3nFPnPhKKMtoTVFZU7Qo4m2Ef-fTMHBQ8zct7wsI0KakfsVx3axXEMPo5dvKRUThdVJRlhAytyGfir9YC0e6Wo_S44iUhAC1ZrXs8AqO7LJwHc6OqlahLxfn0KRVdXls9yNUjQG1rsGd7gZTOjGasRn48KgCoJnL2lzc3VlcmovdmFsaWRGcm9t",
+    "type" : "DataIntegrityProof",
+    "verificationMethod" : "did:key:zDnaeQa8zprPhHA7Yuxcgc2Uh6XNQgaKjmFZE4EaA9fk5svmJ"
+  },
+  "type" : [
+    "VerifiableCredential"
+  ],
+  "validFrom" : "2026-01-01T00:00:00Z"
+}

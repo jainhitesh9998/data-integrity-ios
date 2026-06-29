@@ -1,6 +1,14 @@
 # DataIntegrity
 
 [![CI](https://github.com/jainhitesh9998/data-integrity-ios/actions/workflows/ci.yml/badge.svg)](https://github.com/jainhitesh9998/data-integrity-ios/actions/workflows/ci.yml)
+[![Swift Versions](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fjainhitesh9998%2Fdata-integrity-ios%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/jainhitesh9998/data-integrity-ios)
+[![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fjainhitesh9998%2Fdata-integrity-ios%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/jainhitesh9998/data-integrity-ios)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+> The Swift-versions and platforms badges are served by the Swift Package Index
+> and populate once the package is indexed there. Until then they may show no
+> data — replace them with the exact markdown from the package page's
+> "Do you maintain this package?" link after it's listed.
 
 A Swift library to **verify** and **derive** W3C Verifiable Credential Data
 Integrity proofs — with first-class support for the **`ecdsa-sd-2023`**

@@ -1,0 +1,85 @@
+name: Dependency Update
+
+# Weekly (and on-demand): refresh the Swift package dependencies to the latest
+# versions allowed by Package.swift, run the FULL regression suite (unit tests +
+# RDFC-1.0/JCS/Wycheproof conformance + iOS build), and open a PR **only if
+# everything still passes**. This is how an upstream fix (e.g. a new
+# swift-rdf-canonize release) is picked up automatically.
+#
+# Requires repo setting: Settings -> Actions -> General -> Workflow permissions
+# -> "Allow GitHub Actions to create and approve pull requests".
+on:
+  schedule:
+    - cron: '0 5 * * 1'      # Mondays 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: dependency-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update, test, and PR
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Swift toolchain
+        run: swift --version
+
+      - name: Update dependencies
+        id: update
+        run: |
+          swift package update
+          if git diff --quiet -- Package.resolved; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No dependency updates available." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Dependency changes"
+              echo '```diff'
+              git --no-pager diff -- Package.resolved
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # Each gated step adds `&& success()` so a regression failure aborts the
+      # chain and the PR is never opened (custom `if:` drops the implicit success check).
+      - name: Run regressions (full test suite + conformance)
+        if: steps.update.outputs.changed == 'true' && success()
+        run: swift test --parallel
+
+      - name: Build for iOS
+        if: steps.update.outputs.changed == 'true' && success()
+        run: xcodebuild -scheme data-integrity-ios -destination 'generic/platform=iOS' build
+
+      - name: Discard test-time sample regeneration
+        if: steps.update.outputs.changed == 'true' && success()
+        run: git checkout -- Samples/ 2>/dev/null || true
+
+      - name: Open pull request
+        if: steps.update.outputs.changed == 'true' && success()
+        uses: peter-evans/create-pull-request@v7
+        with:
+          add-paths: Package.resolved
+          branch: deps/swiftpm-update
+          delete-branch: true
+          title: "chore(deps): update Swift package dependencies"
+          commit-message: "chore(deps): update Swift package dependencies (Package.resolved)"
+          body: |
+            Automated dependency refresh (`swift package update`).
+
+            ✅ Regressions passed on this update: the full `swift test` suite
+            (including the RDFC-1.0 / JCS / Wycheproof conformance vectors) **and**
+            the iOS build. Only `Package.resolved` is changed.
+
+            The exact version bumps are in the `Package.resolved` diff and the
+            [workflow run summary](../../actions/workflows/dependency-update.yml).
+            Review and merge if happy. (If this picks up a `swift-rdf-canonize`
+            fix for `test075`, also un-exclude it in `ConformanceRdfcTests` and
+            re-sync `Vendor/RDFCLabels` per its `NOTICE.md`.)

@@ -17,7 +17,7 @@ import JSONLD
 /// ```
 public final class DataIntegrityClient: Sendable {
     /// Library version, surfaced for diagnostics / the React Native bridge.
-    public static let version = "0.3.0"
+    public static let version = "0.3.1"
 
     private let documentLoader: any JSONLDDocumentLoader
 

@@ -59,6 +59,7 @@ hashes of those N-Quads.
 Sources/DataIntegrity/
   DataIntegrityClient.swift     Public facade: canonicalize / verifyCredential / deriveCredential
   JSON/JSONValue.swift          Value-typed JSON model (+ Any/JSONLD bridges, RFC8259)
+  JSON/JSONParser.swift         Correctly-rounded JSON parser (number fidelity vs JSONSerialization)
   JSON/JCS.swift                JSON Canonicalization Scheme (RFC 8785) for jcs suites
   DTO/VerificationResult.swift  { verified, cryptosuite?, reason? }
   Errors/DataIntegrityError.swift   Stable error codes
@@ -203,7 +204,9 @@ Key design decisions: verify relabels in **c14n space** (the proof's `labelMap` 
 keyed by `c14n` labels) so it needs no label map; SEC1 points are decompressed
 in-library (`ECPointDecompression.swift`) because CryptoKit's compressed-point API
 is iOS 16+ but the library targets **iOS 14**; ECDSA signatures are normalized to
-low-S so high-S issuer signatures still verify.
+low-S so high-S issuer signatures still verify; and JSON is parsed by a
+correctly-rounded parser (`JSON/JSONParser.swift`) rather than `JSONSerialization`,
+whose decimal rounding can otherwise diverge from the signer's canonical bytes.
 
 ---
 
@@ -256,7 +259,7 @@ let derived = try await client.deriveCredential(
 - canonicalization parity, round-trip verify for every suite, P-384, JWK decode;
 - full `ecdsa-sd-2023` issue → derive → verify lifecycle and optional-field shapes;
 - **standard conformance suites** (run in CI on every push): W3C `rdf-canon`
-  (RDFC-1.0, 63/64 positive vectors), RFC 8785 JCS via `cyberphone` (5/6), and
+  (RDFC-1.0, 63/64 positive vectors — `test075` is an upstream ordering bug), RFC 8785 JCS via `cyberphone` (6/6), and
   Project Wycheproof ECDSA P-256/P-384 + Ed25519 — each group's key decoded
   through this library's own JWK / compressed-point decoders (exercising the
   iOS-14 SEC1 decompression). See `Tests/DataIntegrityTests/Vectors/ATTRIBUTION.md`;

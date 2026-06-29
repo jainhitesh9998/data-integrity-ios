@@ -10,10 +10,15 @@ import RDFCanonize
 /// Vectors: <https://github.com/w3c/rdf-canon> (`tests/rdfc10`), bundled under
 /// `Vectors/rdf-canon/` (positive tests only). See `Vectors/ATTRIBUTION.md`.
 final class ConformanceRdfcTests: XCTestCase {
-    /// Vectors the upstream `swift-rdf-canonize` engine does not yet pass. These
-    /// are dependency limitations, not in this library's code; documented and
-    /// excluded so a regression elsewhere still fails the suite.
-    ///   - `test075`: a blank-node symmetry/automorphism case the engine mislabels.
+    /// Vectors the upstream `swift-rdf-canonize` engine does not yet pass —
+    /// dependency limitations, not this library's code; documented + excluded so
+    /// any regression elsewhere still fails the suite.
+    ///   - `test075`: two blank nodes distinguished only by their incoming
+    ///     predicate (`#A` vs `#B`) get distinct first-degree hashes which
+    ///     swift-rdf-canonize 0.2.2 (latest) orders opposite to the W3C
+    ///     reference, labelling them swapped (`e0`→`c14n2` instead of `c14n0`).
+    ///     A URDNA2015 ordering bug in the dependency; reported upstream.
+    ///     The other 63 positive vectors pass.
     private let knownUpstreamLimitations: Set<String> = ["test075"]
 
     func testRdfc10TestSuite() throws {

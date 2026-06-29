@@ -9,15 +9,11 @@ import XCTest
 /// Vectors: <https://github.com/cyberphone/json-canonicalization> (`testdata`),
 /// bundled under `Vectors/jcs/`. See `Vectors/ATTRIBUTION.md`.
 final class ConformanceJcsTests: XCTestCase {
-    /// Vectors excluded because of a Foundation limitation, not our JCS logic:
-    ///   - `values.json`: contains `0.000…01` (1e-27 in long-decimal form);
-    ///     `JSONSerialization` (which `JSONValue` parses through) is not
-    ///     correctly-rounded for such extreme decimal literals, yielding a
-    ///     double one ULP off — so it serializes as `1.0000000000000002e-27`
-    ///     instead of `1e-27`. Given a correctly-parsed double, our `JCS.number`
-    ///     produces the RFC 8785 shortest form. Credential JSON does not contain
-    ///     such values; the other vectors cover key ordering + string/unicode escaping.
-    private let knownLimitations: Set<String> = ["values.json"]
+    /// All RFC 8785 reference vectors now pass — including `values.json`
+    /// (extreme-float canonicalization, e.g. `1e-27` written as `0.000…01`) — since
+    /// `JSONValue` parses numbers with a correctly-rounded parser (`JSONParser`)
+    /// instead of `JSONSerialization`.
+    private let knownLimitations: Set<String> = []
 
     func testJcsReferenceVectors() throws {
         let inputs = (Bundle.module.urls(forResourcesWithExtension: "json", subdirectory: "Vectors/jcs/input") ?? [])

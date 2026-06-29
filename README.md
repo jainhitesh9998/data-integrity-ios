@@ -141,13 +141,12 @@ upstream vectors**, bundled under `Tests/DataIntegrityTests/Vectors/`
 
 - **RDF Dataset Canonicalization (RDFC-1.0)** — the W3C
   [`rdf-canon`](https://github.com/w3c/rdf-canon) suite (`tests/rdfc10`): **63/64**
-  positive vectors pass (`test075`, a blank-node symmetry case, is a known
-  upstream `swift-rdf-canonize` limitation, documented + excluded).
+  positive vectors pass. `test075` is a first-degree-hash ordering bug in the
+  upstream `swift-rdf-canonize` (0.2.2, latest) — reported upstream, documented + excluded.
 - **JSON Canonicalization Scheme (RFC 8785)** — the
   [`cyberphone/json-canonicalization`](https://github.com/cyberphone/json-canonicalization)
-  reference data, through this library's `JCS`: **5/6** (`values.json` excludes one
-  extreme-decimal float, e.g. `1e-27`, that Foundation's `JSONSerialization` does
-  not round-trip correctly — a parser limitation, not the JCS logic).
+  reference data, through this library's `JCS`: **6/6**. (Numbers are parsed by a
+  correctly-rounded parser, so extreme-decimal floats like `1e-27` canonicalize exactly.)
 - **ECDSA P-256 / P-384 & Ed25519** — [Project Wycheproof](https://github.com/C2SP/wycheproof)
   signature vectors (IEEE-P1363 + Ed25519). Each group's key is decoded through
   this library's **JWK + compressed-point/Multikey** decoders (validating the

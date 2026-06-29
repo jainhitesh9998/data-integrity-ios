@@ -30,14 +30,13 @@ extension JSONValue {
     }
 
     /// Parse a JSON document from raw bytes.
+    ///
+    /// Uses a correctly-rounded parser (``JSONParser``) rather than
+    /// `JSONSerialization`, whose number parsing is not correctly-rounded for
+    /// extreme decimal literals (e.g. `0.000…01`) and could diverge from the
+    /// signer's canonical bytes.
     public init(parsing data: Data) throws {
-        let any: Any
-        do {
-            any = try JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])
-        } catch {
-            throw DataIntegrityError(.invalidJSON, "could not parse JSON: \(error.localizedDescription)")
-        }
-        self.init(any)
+        self = try JSONParser.parse(data)
     }
 
     /// Bridge a Foundation JSON object (from `JSONSerialization`) into `JSONValue`.

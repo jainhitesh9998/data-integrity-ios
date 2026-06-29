@@ -1,8 +1,8 @@
 # DataIntegrity
 
 [![CI](https://github.com/jainhitesh9998/data-integrity-ios/actions/workflows/ci.yml/badge.svg)](https://github.com/jainhitesh9998/data-integrity-ios/actions/workflows/ci.yml)
-[![Swift](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
-[![Platforms](https://img.shields.io/badge/Platforms-iOS%2014%2B%20%7C%20macOS%2013%2B-blue.svg)](https://github.com/jainhitesh9998/data-integrity-ios)
+[![Swift](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fjainhitesh9998%2Fdata-integrity-ios%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/jainhitesh9998/data-integrity-ios)
+[![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fjainhitesh9998%2Fdata-integrity-ios%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/jainhitesh9998/data-integrity-ios)
 [![codecov](https://codecov.io/gh/jainhitesh9998/data-integrity-ios/branch/main/graph/badge.svg)](https://codecov.io/gh/jainhitesh9998/data-integrity-ios)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 

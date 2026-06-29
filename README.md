@@ -18,6 +18,8 @@ selective-disclosure cryptosuite — plus a standalone **RDF canonicalization**
 function. Built to plug into the Inji Wallet (React Native) iOS app the same way
 `inji-vci-client-ios-swift` does.
 
+📖 **Design & integration guide:** [`docs/DESIGN.md`](docs/DESIGN.md) · **React Native:** [`docs/REACT_NATIVE_INTEGRATION.md`](docs/REACT_NATIVE_INTEGRATION.md)
+
 ## Features
 
 | Capability | Cryptosuites |
@@ -40,7 +42,7 @@ function. Built to plug into the Inji Wallet (React Native) iOS app the same way
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.1.0"),
+    .package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.1.1"),
 ],
 targets: [
     .target(name: "YourTarget", dependencies: [

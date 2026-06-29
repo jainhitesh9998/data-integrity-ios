@@ -13,7 +13,7 @@ proofs, and exposes RDF canonicalization as a standalone function.
 
 | Operation | Cryptosuites |
 |---|---|
-| **Verify** | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` (P-256/P-384), `eddsa-rdfc-2022` (Ed25519), `Ed25519Signature2020` |
+| **Verify** | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` / `ecdsa-jcs-2019` (P-256/P-384), `eddsa-rdfc-2022` (Ed25519), `Ed25519Signature2020` |
 | **Derive** (selective disclosure) | `ecdsa-sd-2023` |
 | **Canonicalize** | RDFC-1.0 / URDNA2015 (a.k.a. `rdfc-2019`) |
 
@@ -108,6 +108,10 @@ by the document loader (§7).
 2. `proofConfigHash = SHA(canonicalize(proof options))`, `docHash = SHA(canonicalize(doc − proof))`.
 3. `hashData = proofConfigHash ‖ docHash`.
 4. ECDSA verifies `hashData` (curve hashes it internally; P-384 ⇒ SHA-384); EdDSA verifies it directly.
+
+`ecdsa-jcs-2019` is identical except the document and proof config are
+canonicalized with **JCS** (RFC 8785, `JSON/JCS.swift`) instead of RDFC-1.0 — so
+it does no JSON-LD processing and needs no document loader.
 
 ### verifyCredential — ecdsa-sd-2023 (derived)
 1. `parseDerivedProofValue` → `baseSignature`, ephemeral `publicKey`, `signatures`, `labelMap`, `mandatoryIndexes`.
@@ -204,7 +208,7 @@ low-S so high-S issuer signatures still verify.
 ### Install (Swift Package Manager)
 
 ```swift
-.package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.1.1"),
+.package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.2.0"),
 // target dependency:
 .product(name: "DataIntegrity", package: "data-integrity-ios"),
 ```
@@ -255,5 +259,4 @@ test). Coverage ≈ 88% of the library's own code. Highlights:
 ## 11. Platforms & limitations
 
 iOS 14+, macOS 13+; Swift 6 toolchain (consumable from a Swift 5 app target).
-`ecdsa-jcs-2019` (JCS, not RDF canonicalization) is out of scope. Android needs a
-parallel native implementation for `ecdsa-sd-2023`.
+Android needs a parallel native implementation for `ecdsa-sd-2023`.

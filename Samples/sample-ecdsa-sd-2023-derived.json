@@ -23,7 +23,7 @@
     "created" : "2026-01-01T00:00:00Z",
     "cryptosuite" : "ecdsa-sd-2023",
     "proofPurpose" : "assertionMethod",
-    "proofValue" : "u2V0BhVhAl1zUh2dPzTI28KuR7qvbd9wlNS6dN_XWuTqPTDvahVguzDfFa_G8SJM9eYafefaHOn3oEzkr4-0j6BES7Pq_31gjgCQDUadYCDOJjqGxg8vXNQpAmQeMbvHB4Y6XDNdoMDXyXn2EWECQORQ3jq96FwZDnzOziKE8MJ_phfy8UVYpDF5q01EVeJc--MBEzruSZy9CKLnPeMqKyL2wjAeFn6ACDIEPFdw5WEB157OBXjh5qeQM09hFy-RN3bO5TJ0s_Akg48u0KYqAhSnpjqQUP5ubMiygIu3MY1hpsjwCxS388nTyiS3Mofx_WEBbr9qsYULd4KFp1ipfecU-c-Eooy2hNUVlTtCjibYR_59MwcFDzNy3vCwjQpqR-xXHdrFcQw-jl28pFROF1UlGWEDK3IZ-Kv1gLR7paj9LjiJSEALVmtezwCo7ssnAdzo6qVqEvF-fQpFV1eWz3I1SNAbWuwZ3uBlM6MZqxGfjwqAKoQBYII0tywhjHYwGJaBrT1-DG-LNNoKmqgE-tZGRUInlAroNgwEDBA",
+    "proofValue" : "u2V0BhVhABo6IxerVBv9TZ_xSGE01pN4qxk7SfQQ3K5z1bOymz5iVKv_p9BMOafh41CwsS5rycUYrAHHJu0N7KvLYtxCHzlgjgCQDUadYCDOJjqGxg8vXNQpAmQeMbvHB4Y6XDNdoMDXyXn2EWEBbd-TOvT4lG2Rv8xFCWDhAuvkABJ03_RJDvHWakejjXttFh8R820xqA3r8DzloFHn7s235tnVVMKBZsYh_ai_OWECwK94xaoipFdN7SI_M3epT0PTbUdbcteMM9iJO2-3bCMHaRW-fsr0AG5IAygxI85COM9VtrPmxMEPL6axlvmIUWEC_jVqsQu0v7bWfIOQSe31RMJ3YdA3UTSXpOVCuOC52KucVTcHNb9q_lAlzqDYu8YbozFPGaOFWZZTRVhMzRbFDWECWAVTfuaCEg0aNBRyo9gSLGgGsiyKdMWLuzHBDW3go5OFrdnDkf5Izh9MMbIDzWOKG6VixnEwVaJ5gyZeOEyYgoQBYII0tywhjHYwGJaBrT1-DG-LNNoKmqgE-tZGRUInlAroNgwEDBA",
     "type" : "DataIntegrityProof",
     "verificationMethod" : "did:key:zDnaeQa8zprPhHA7Yuxcgc2Uh6XNQgaKjmFZE4EaA9fk5svmJ"
   },

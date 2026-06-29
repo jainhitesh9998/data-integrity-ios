@@ -53,6 +53,20 @@ final class RdfcVerifyTests: XCTestCase {
         XCTAssertFalse(tamperedResult.verified)
     }
 
+    func testEcdsaJcs2019RoundTrip() async throws {
+        // JCS canonicalization (RFC 8785), no JSON-LD processing.
+        let key = P256.Signing.PrivateKey()
+        let signed = try await TestSigner.signEcdsaJcs2019(credential: try sampleCredential(), privateKey: key)
+        let client = DataIntegrityClient(documentLoader: loader)
+
+        let result = try await client.verifyCredential(try signed.serialized())
+        XCTAssertTrue(result.verified, result.reason ?? "no reason")
+        XCTAssertEqual(result.cryptosuite, "ecdsa-jcs-2019")
+
+        let tamperedResult = try await client.verifyCredential(try tamper(signed).serialized())
+        XCTAssertFalse(tamperedResult.verified)
+    }
+
     func testEcdsaRdfc2019P384RoundTrip() async throws {
         // P-384 exercises SHA-384 hashing + P-384 multikey/did:key + point decompression.
         let key = P384.Signing.PrivateKey()

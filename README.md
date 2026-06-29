@@ -24,7 +24,7 @@ function. Built to plug into the Inji Wallet (React Native) iOS app the same way
 
 | Capability | Cryptosuites |
 |---|---|
-| **Verify** a credential's proof | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` (P-256/P-384), `eddsa-rdfc-2022` (Ed25519), `Ed25519Signature2020` |
+| **Verify** a credential's proof | `ecdsa-sd-2023` (derived), `ecdsa-rdfc-2019` / `ecdsa-jcs-2019` (P-256/P-384), `eddsa-rdfc-2022` (Ed25519), `Ed25519Signature2020` |
 | **Derive** a selectively-disclosed credential | `ecdsa-sd-2023` |
 | **Canonicalize** a JSON-LD document | RDFC-1.0 / URDNA2015 (rdfc-2019) |
 
@@ -42,7 +42,7 @@ function. Built to plug into the Inji Wallet (React Native) iOS app the same way
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.1.1"),
+    .package(url: "https://github.com/jainhitesh9998/data-integrity-ios.git", from: "0.2.0"),
 ],
 targets: [
     .target(name: "YourTarget", dependencies: [
@@ -137,8 +137,7 @@ swift test
 real selectively-disclosed `ecdsa-sd-2023` credential).
 
 > Remaining nice-to-have: run the broader [W3C vc-di-ecdsa test suite](https://github.com/w3c/vc-di-ecdsa-test-suite)
-> for wider coverage. `ecdsa-jcs-2019` (JCS canonicalization) is intentionally
-> out of scope — this library does RDF canonicalization (rdfc/sd).
+> for wider coverage.
 
 ## React Native integration
 

@@ -28,6 +28,8 @@ struct CredentialVerifier {
         case Cryptosuite.ecdsaRdfc2019, Cryptosuite.eddsaRdfc2022:
             let verifier = RdfcSuiteVerifier(loader: loader, keyResolver: keyResolver)
             return await verifier.verify(credential: credential, proof: proof)
+        case Cryptosuite.ecdsaJcs2019:
+            return await JcsSuiteVerifier(keyResolver: keyResolver).verify(credential: credential, proof: proof)
         default:
             return .failure(suite, "unsupported cryptosuite: \(suite)")
         }

@@ -25,7 +25,7 @@
     "created" : "2026-01-01T00:00:00Z",
     "cryptosuite" : "ecdsa-rdfc-2019",
     "proofPurpose" : "assertionMethod",
-    "proofValue" : "z3DHmVnrjq4dcTYfjM7gFFk57t83RPLAbTrNMoLh1xcS4dNtT4SkvHTkSXnmbbLJzzcVy8VuG2LCWraTpdv93HxCp",
+    "proofValue" : "zDqjbeL1uyoC3iRxRh52yTU3q8kjcxi4wu1XDYwMHWsrKg1bACR1h8KdWiYVkpH8VPh7fCGYx2VNjuY9LkzQvEvj",
     "type" : "DataIntegrityProof",
     "verificationMethod" : "did:key:zDnaeQa8zprPhHA7Yuxcgc2Uh6XNQgaKjmFZE4EaA9fk5svmJ"
   },

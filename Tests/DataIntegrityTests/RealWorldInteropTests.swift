@@ -41,6 +41,14 @@ final class RealWorldInteropTests: XCTestCase {
         XCTAssertEqual(result.cryptosuite, "ecdsa-rdfc-2019")
     }
 
+    func testVerifyRealEcdsaJcs2019() async throws {
+        let vc = try isolatingProof(try loadCredential(), cryptosuite: "ecdsa-jcs-2019")
+        let client = DataIntegrityClient(documentLoader: loader)
+        let result = try await client.verifyCredential(try vc.serialized())
+        XCTAssertTrue(result.verified, "jcs-2019 interop failed: \(result.reason ?? "no reason")")
+        XCTAssertEqual(result.cryptosuite, "ecdsa-jcs-2019")
+    }
+
     func testDeriveAndVerifyRealEcdsaSd2023() async throws {
         let base = try isolatingProof(try loadCredential(), cryptosuite: "ecdsa-sd-2023")
         let client = DataIntegrityClient(documentLoader: loader)

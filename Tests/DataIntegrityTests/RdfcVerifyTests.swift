@@ -53,6 +53,21 @@ final class RdfcVerifyTests: XCTestCase {
         XCTAssertFalse(tamperedResult.verified)
     }
 
+    func testEcdsaRdfc2019P384RoundTrip() async throws {
+        // P-384 exercises SHA-384 hashing + P-384 multikey/did:key + point decompression.
+        let key = P384.Signing.PrivateKey()
+        let signed = try await TestSigner.signEcdsaRdfc2019P384(
+            credential: try sampleCredential(), privateKey: key, loader: loader)
+        let client = DataIntegrityClient(documentLoader: loader)
+
+        let result = try await client.verifyCredential(try signed.serialized())
+        XCTAssertTrue(result.verified, result.reason ?? "no reason")
+        XCTAssertEqual(result.cryptosuite, "ecdsa-rdfc-2019")
+
+        let tamperedResult = try await client.verifyCredential(try tamper(signed).serialized())
+        XCTAssertFalse(tamperedResult.verified)
+    }
+
     func testEddsaRdfc2022RoundTrip() async throws {
         let key = Curve25519.Signing.PrivateKey()
         let signed = try await TestSigner.signEddsaRdfc2022(

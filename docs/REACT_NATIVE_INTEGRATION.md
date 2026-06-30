@@ -125,8 +125,11 @@ host callbacks), unlike `InjiVciClient`.
 `verifyCredential(vc, format)` (the single entry point all verification funnels
 through) now:
 
-1. `ecdsa-sd-2023` → native `DataIntegrityCanonize.verifyCredential` → then the
-   existing bitstring revocation-status check.
+1. `ecdsa-sd-2023` → if it's a **base** proof, derive a full disclosure first
+   (reveal **all** optional statements so every signed statement is checked), then
+   native `DataIntegrityCanonize.verifyCredential` → then the existing bitstring
+   revocation-status check. See
+   [selective-disclosure-verification.md](selective-disclosure-verification.md).
 2. other `DataIntegrityProof` (`ecdsa-rdfc-2019` / `eddsa-rdfc-2022` /
    `Ed25519Signature2020`) → existing pure-JS path, which now succeeds on iOS
    because `DataIntegrityCanonize.canonicalize` resolves.

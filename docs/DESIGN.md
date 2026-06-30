@@ -171,7 +171,10 @@ public struct DataIntegrityError: Error, LocalizedError { let code: DataIntegrit
 
 Practical guidance: bundle/pin `@context`s (don't fetch live) for deterministic,
 auditable verification, and confirm the issuer key is authorized for the proof
-purpose against the controller/DID document.
+purpose against the controller/DID document. To verify *every* signed statement
+when opening a credential that carries an `ecdsa-sd-2023` base proof — i.e. derive
+revealing **all** optional statements first — see
+[selective-disclosure-verification.md](selective-disclosure-verification.md).
 
 ---
 

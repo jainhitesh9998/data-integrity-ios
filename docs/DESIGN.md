@@ -198,7 +198,10 @@ verification, or inject your own `JSONLDDocumentLoader`.
 `Vendor/RDFCLabels/` is a renamed copy of `swift-rdf-canonize` that adds one
 function — `canonicalizeWithLabels` — exposing the canonical blank-node label map
 that the **derive** path needs (upstream computes it internally but doesn't expose
-it). Verify/canonicalize use the upstream package directly. (See `Vendor/RDFCLabels/NOTICE.md`.)
+it). Verify/canonicalize use the upstream package directly. The full rationale —
+options weighed, decision matrix, sequence diagram, and the upstream-fix workflow —
+is in [ADR 0001](adr/0001-vendored-rdf-canonicalizer.md); re-sync steps are in
+`Vendor/RDFCLabels/NOTICE.md`.
 
 Key design decisions: verify relabels in **c14n space** (the proof's `labelMap` is
 keyed by `c14n` labels) so it needs no label map; SEC1 points are decompressed

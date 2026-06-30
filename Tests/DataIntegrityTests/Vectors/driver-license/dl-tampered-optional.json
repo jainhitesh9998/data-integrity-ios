@@ -1,0 +1,46 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    {
+      "DriverLicenseCredential": "urn:example:dl#DriverLicenseCredential",
+      "DriverLicense": "urn:example:dl#DriverLicense",
+      "fullName": "urn:example:dl#fullName",
+      "licenseNumber": "urn:example:dl#licenseNumber",
+      "dateOfBirth": "urn:example:dl#dateOfBirth",
+      "issuingState": "urn:example:dl#issuingState",
+      "licenseClass": "urn:example:dl#licenseClass",
+      "address": "urn:example:dl#address",
+      "street": "urn:example:dl#street",
+      "city": "urn:example:dl#city",
+      "postalCode": "urn:example:dl#postalCode"
+    }
+  ],
+  "type": [
+    "VerifiableCredential",
+    "DriverLicenseCredential"
+  ],
+  "issuer": "did:key:zDnaebuXdh2kJv1TAfejXSfA6s2sF6fuE1eRwhWdNBERL1rhU",
+  "validFrom": "2026-01-01T00:00:00Z",
+  "validUntil": "2031-01-01T00:00:00Z",
+  "credentialSubject": {
+    "type": "DriverLicense",
+    "fullName": "Jane Marie Doe",
+    "licenseNumber": "DL-00-000000",
+    "dateOfBirth": "1998-05-14",
+    "issuingState": "Karnataka",
+    "licenseClass": "LMV",
+    "address": {
+      "street": "12 MG Road",
+      "city": "Bengaluru",
+      "postalCode": "560001"
+    }
+  },
+  "proof": {
+    "verificationMethod": "did:key:zDnaebuXdh2kJv1TAfejXSfA6s2sF6fuE1eRwhWdNBERL1rhU#zDnaebuXdh2kJv1TAfejXSfA6s2sF6fuE1eRwhWdNBERL1rhU",
+    "type": "DataIntegrityProof",
+    "cryptosuite": "ecdsa-sd-2023",
+    "proofPurpose": "assertionMethod",
+    "created": "2026-06-30T12:09:58.528544Z",
+    "proofValue": "u2V0AhVhApCEkeakQsly7CFfmEr35zfsf_0-D1F_EJWzDO4IhJFqC92rJXUEiXjHYgd811ynNRLRxFsFi0_kjrC0gU_DiM1gjgCQCjcPrHwGARDaI28y1L18gWFssgOlReUlIRKMQobwus6JYIML11-hojezJWUZNKUl80-Bq6oRoJNvTgNGDQF09e1-_iFhA3OAI018U6Xb1ULOY43WfEtl8HKU97srpyO-dnQvwwknICbI9PiyXi6ys6YoMnSGbzyRdrd_krXasR_WUOh7ZfVhAV13P_te8bsjg9z0-eXPtWuq5Ew5b3uFwT2bSYF3pKcdsemxjvJrEBBIeeuGX1peCVIagx-4E1tNHpHP_1gj8t1hALTu5jSHO3G32rvYiATUiahQ_CA1tLg0WWhi1Kpr35K7Ao2XiKBuDTXDWbHC4r-8wTb37nhkvwTfE8TuuN6L_b1hA74AGLolNH8k3Hs-lKmUEhh4co3mrZU3nUwLW3WP5TjaQOSI-u2EH03N-sNDf7PFtm8O-C40FJGhCPnMI_aXC3FhAe9obmtZB6gvqqcFP4kYEzQ4V2GSa_Rg7A4q4T0PL8QoFGymbI_K7-p1Q3eyQyUZorjo29hl-okxj-KFCtjrirFhAyAuFCiIYlfPcMK62R8FWDoPa2uwNKFuOzIkYBxsk6uKof-ne5cY33CyBH4ZGHJFpvLTQYiX6bKZ4qfvSxIMRAlhAij4TF5UcJ6XP54hZzxlx0LdimxEwR0T9GaeFGCPo9G9Tl4V389KendHW0QQ3RyzGtF0KBa0smrCd1ZdLeP7AYlhA18wn5KofJ0gihZI3oXH4F8ryvEupN9rmcGxFYZaTQ5nYjMSxFUU7B_qrVmmZHjOhQZh-9ndzhk0B8AEIkJsS8oRnL2lzc3VlcmovdmFsaWRGcm9teBsvY3JlZGVudGlhbFN1YmplY3QvZnVsbE5hbWV4Hy9jcmVkZW50aWFsU3ViamVjdC9saWNlbnNlQ2xhc3M"
+  }
+}

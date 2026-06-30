@@ -32,6 +32,17 @@ verifies only the mandatory subset — a tampered *optional* field would slip
 through. (That was the latent bug: a broken pointer enumerator threw, the code
 fell back to `derive(base, [])`, and silently under-verified every credential.)
 
+Two failure modes follow directly from the two-layer signing — and they fail in
+**different places**, which is a useful sanity check:
+
+- tampering a **mandatory** field → the **base signature** fails
+  (*"base signature did not verify against the issuer key"*);
+- tampering a **disclosed optional** field → that statement's **per-statement
+  signature** fails (*"non-mandatory statement signature #N did not verify"*).
+
+Both are exercised in `DriverLicenseSdTests` (a mandatory `fullName` tamper and an
+optional `licenseNumber` tamper, each correctly rejected).
+
 ```mermaid
 flowchart LR
   base["base credential<br/>(ecdsa-sd-2023)"] --> enum["enumerate ALL<br/>disclosable pointers"]
@@ -88,11 +99,33 @@ function enumerateDisclosablePointers(doc: any): string[] {
       out.push(prefix);                                    // scalar leaf
     }
   };
-  const { proof, ...claims } = doc;
+  // Skip `@context` (JSON-LD framing — produces no statements) and `proof`.
+  const { proof, "@context": _ctx, ...claims } = doc;
   walk(claims, "");
   return out;
 }
 ```
+
+### What counts as a disclosable statement (and why `@context` isn't "optional")
+
+Selective disclosure operates on **RDF statements** — the N-Quads the credential
+canonicalizes to — **not on raw JSON keys**. So the mandatory/optional split only
+applies to things that *become statements*:
+
+- **Data claims** (`fullName`, `address`, `dateOfBirth`, …) → become N-Quads →
+  each is mandatory or optional. These are what you enumerate and disclose.
+- **`@context`** is JSON-LD *framing*: it maps terms to IRIs but produces **no
+  N-Quads**. It is therefore **neither mandatory nor optional** — not a
+  disclosable statement at all — and it's always kept in the derived credential
+  (you need it to interpret the doc). Emitting `/@context/...` pointers is
+  *harmless* (they select JSON that yields no statement — a no-op) but noisy, so
+  the enumerator **skips `@context`**. (Earlier output that listed `/@context/1/*`
+  as "optional" was exactly this enumerator artifact — not a real signed claim.)
+- **`type` / `@type`** *does* produce a statement (an `rdf:type` triple), so it
+  **is** a real disclosable statement — disclose it as a **node**
+  (`/credentialSubject/type`), never indexed (`/credentialSubject/type/0`).
+
+In short: enumerate the *claims*, not the JSON scaffolding.
 
 ## 4. Resilience — drop-and-retry
 

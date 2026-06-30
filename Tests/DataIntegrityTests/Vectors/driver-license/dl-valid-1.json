@@ -1,0 +1,46 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    {
+      "DriverLicenseCredential": "urn:example:dl#DriverLicenseCredential",
+      "DriverLicense": "urn:example:dl#DriverLicense",
+      "fullName": "urn:example:dl#fullName",
+      "licenseNumber": "urn:example:dl#licenseNumber",
+      "dateOfBirth": "urn:example:dl#dateOfBirth",
+      "issuingState": "urn:example:dl#issuingState",
+      "licenseClass": "urn:example:dl#licenseClass",
+      "address": "urn:example:dl#address",
+      "street": "urn:example:dl#street",
+      "city": "urn:example:dl#city",
+      "postalCode": "urn:example:dl#postalCode"
+    }
+  ],
+  "type": [
+    "VerifiableCredential",
+    "DriverLicenseCredential"
+  ],
+  "issuer": "did:key:zDnaebnE23MAErN2eiiMeQVc78QAT4rFJuHc5si8jjKajaqT9",
+  "validFrom": "2026-01-01T00:00:00Z",
+  "validUntil": "2031-01-01T00:00:00Z",
+  "credentialSubject": {
+    "type": "DriverLicense",
+    "fullName": "Jane Marie Doe",
+    "licenseNumber": "DL-99-887766",
+    "dateOfBirth": "1998-05-14",
+    "issuingState": "Karnataka",
+    "licenseClass": "LMV",
+    "address": {
+      "street": "12 MG Road",
+      "city": "Bengaluru",
+      "postalCode": "560001"
+    }
+  },
+  "proof": {
+    "verificationMethod": "did:key:zDnaebnE23MAErN2eiiMeQVc78QAT4rFJuHc5si8jjKajaqT9#zDnaebnE23MAErN2eiiMeQVc78QAT4rFJuHc5si8jjKajaqT9",
+    "type": "DataIntegrityProof",
+    "cryptosuite": "ecdsa-sd-2023",
+    "proofPurpose": "assertionMethod",
+    "created": "2026-06-30T12:09:15.200710Z",
+    "proofValue": "u2V0AhVhAuxmwui1u2fxGTtrYXd8OBigS_uV9KUu3Z-CXJged9ofrmxaE2GodaG4oQOBpu9R9iPqmesx8-y-pFJs9uNQZBlgjgCQD6e-hhKWDYJxINiqsxvnwx9VFiq14beQvXsLLwYjtGK5YIJD4cDBTlf8UtaizOFHJrg-HlC6-xbPxEAE5IO_SxXGbglhA523jn4WWUuTAgXzwa5RvsnKX6NwIXQkIVv8UOM6JEGahqP5eUSCb-COY2L6QNs5t64gviiPFyxKQLqLiA29KvFhASSNZYKHQaCvifM5r9m2N0VtAkgt4a95xfhFlOHfqtb5ebYoxYbwqnplVVih1FNyrKEUAiFYbtgrjC7ZN-iNegYdnL2lzc3VlcmovdmFsaWRGcm9teBsvY3JlZGVudGlhbFN1YmplY3QvZnVsbE5hbWV4IC9jcmVkZW50aWFsU3ViamVjdC9saWNlbnNlTnVtYmVyeB4vY3JlZGVudGlhbFN1YmplY3QvZGF0ZU9mQmlydGh4Hy9jcmVkZW50aWFsU3ViamVjdC9pc3N1aW5nU3RhdGV4Gi9jcmVkZW50aWFsU3ViamVjdC9hZGRyZXNz"
+  }
+}

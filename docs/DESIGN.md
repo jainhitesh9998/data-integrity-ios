@@ -144,9 +144,14 @@ public final class DataIntegrityClient: Sendable {
     public func canonicalize(jsonLd: String) async throws -> String
     public func verifyCredential(_ credential: String) async throws -> VerificationResult
     public func deriveCredential(baseCredential: String, selectivePointers: [String]) async throws -> String
+
+    // ecdsa-sd-2023 holder helpers:
+    public func verifyBaseCredential(_ baseCredential: String) async throws -> VerificationResult   // verify-on-open (reveal all)
+    public func describeDisclosure(baseCredential: String) async throws -> DisclosureDescription     // mandatory vs optional
 }
 
 public struct VerificationResult: Codable, Sendable { let verified: Bool; let cryptosuite: String?; let reason: String? }
+public struct DisclosureDescription: Codable, Sendable { let mandatoryPointers: [String]; let optionalPointers: [String] }
 public struct DataIntegrityError: Error, LocalizedError { let code: DataIntegrityErrorCode; let message: String }
 ```
 

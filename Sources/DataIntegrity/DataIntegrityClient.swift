@@ -17,7 +17,7 @@ import JSONLD
 /// ```
 public final class DataIntegrityClient: Sendable {
     /// Library version, surfaced for diagnostics / the React Native bridge.
-    public static let version = "0.3.1"
+    public static let version = "0.4.0"
 
     private let documentLoader: any JSONLDDocumentLoader
 
@@ -85,4 +85,46 @@ public final class DataIntegrityClient: Sendable {
         )
         return try derived.serialized()
     }
+
+    // MARK: - Selective disclosure (holder helpers)
+
+    /// Describe what an `ecdsa-sd-2023` base credential forces vs. what the holder
+    /// may choose to disclose.
+    ///
+    /// - `mandatoryPointers` were fixed by the **issuer** at issuance (read from
+    ///   the base proof) and are present in *every* derived credential — show
+    ///   them as "always shared".
+    /// - `optionalPointers` are the disclosable claims the **holder** may reveal
+    ///   in any subset — show them as user-selectable.
+    ///
+    /// Drives a share/consent screen, and feeds ``deriveCredential(baseCredential:selectivePointers:)``
+    /// (pass the holder's chosen subset of `optionalPointers`).
+    public func describeDisclosure(baseCredential: String) async throws -> DisclosureDescription {
+        let json = try JSONValue(parsing: baseCredential)
+        let described = try SdDisclosure.describe(baseCredential: json)
+        return DisclosureDescription(mandatoryPointers: described.mandatory, optionalPointers: described.optional)
+    }
+
+    /// Verify an `ecdsa-sd-2023` **base** credential by revealing *all* optional
+    /// statements and verifying the result — so every signed statement is
+    /// checked. This is the "verify on open" integrity check: a base proof can't
+    /// be verified directly, so this derives a full disclosure first.
+    ///
+    /// For an already-derived (presented) credential, use ``verifyCredential(_:)``.
+    public func verifyBaseCredential(_ baseCredential: String) async throws -> VerificationResult {
+        let json = try JSONValue(parsing: baseCredential)
+        let optional = try SdDisclosure.allOptionalPointers(baseCredential: json)
+        let derived = try await EcdsaSd2023.derive(
+            baseCredential: json, selectivePointers: optional, loader: documentLoader)
+        return await CredentialVerifier(loader: documentLoader).verify(derived)
+    }
+}
+
+/// The disclosure shape of an `ecdsa-sd-2023` base credential — returned by
+/// ``DataIntegrityClient/describeDisclosure(baseCredential:)``.
+public struct DisclosureDescription: Codable, Sendable {
+    /// Issuer-fixed pointers, always present in any derived credential.
+    public let mandatoryPointers: [String]
+    /// Pointers the holder may choose to disclose (any subset) when presenting.
+    public let optionalPointers: [String]
 }

@@ -64,10 +64,17 @@ let nquads = try await client.canonicalize(jsonLd: documentJSON)
 // Verify any supported Data Integrity proof
 let result = try await client.verifyCredential(credentialJSON)   // .verified / .cryptosuite / .reason
 
-// Derive an ecdsa-sd-2023 selective disclosure (holder side)
+// Derive an ecdsa-sd-2023 selective disclosure (holder side, share/present)
 let derivedJSON = try await client.deriveCredential(
     baseCredential: baseCredentialJSON,
     selectivePointers: ["/credentialSubject/address"])   // RFC 6901 JSON Pointers
+
+// Verify an ecdsa-sd-2023 BASE credential on open (reveal all optional → verify)
+let opened = try await client.verifyBaseCredential(baseCredentialJSON)
+
+// Build a share/consent screen: issuer-fixed vs holder-choosable fields
+let disclosure = try await client.describeDisclosure(baseCredential: baseCredentialJSON)
+// disclosure.mandatoryPointers (always shared) · disclosure.optionalPointers (user picks)
 ```
 
 JSON crosses the boundary as `String`; errors are a single

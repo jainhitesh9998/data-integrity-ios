@@ -195,12 +195,33 @@ Routing in `verifyCredential.ts`:
 Every statement is cryptographically checked, and the enumerator needed **no**
 drop-and-retry on this credential — the `type`-as-node rule was enough.
 
-## 7. Recommended hardening (optional)
+## 7. Built-in holder API (recommended)
 
-The most robust fix is to let the **library** — which owns the canonical pointer
-model and the mandatory set — do the enumeration, e.g. a read-only
-`disclosableOptionalPointers(base)` or a `deriveRevealingAll(base)` convenience.
-That removes the app's dependence on guessing the verifier's JSON-LD model and
-eliminates this class of bug entirely. The app-side algorithm above is the
-working approach under the current "keep enumeration app-side" constraint; the
-library helper is the cleaner long-term option if you want it.
+As of **0.4.0** the library does the enumeration itself — it owns the canonical
+statement model and reads the mandatory set straight from the base proof, so
+there's nothing to guess (no `@context` noise, no `/type/0`, no drop-and-retry).
+Prefer these over an app-side enumerator:
+
+- **`verifyBaseCredential(base) → VerificationResult`** — *verify on open*: reveals
+  **all** optional statements and verifies, so every signed statement is checked.
+  One call; the app needs no pointer logic.
+- **`describeDisclosure(base) → { mandatoryPointers, optionalPointers }`** — for a
+  *share / consent* screen: `mandatoryPointers` are issuer-fixed ("always shared"),
+  `optionalPointers` are the holder's to choose. Feed the chosen subset to
+  `deriveCredential(base, pointers)`.
+
+```ts
+// Verify on open — every signed statement checked, in one call:
+const { verified } = await DataIntegrityCanonize.verifyBaseCredential(baseJson);
+
+// Share / consent — show the user what's forced vs choosable, then present:
+const { mandatoryPointers, optionalPointers } =
+  await DataIntegrityCanonize.describeDisclosure(baseJson);
+//   render `mandatoryPointers` as locked, `optionalPointers` as toggles
+const presentation = await DataIntegrityCanonize.deriveCredential(baseJson, userPicks);
+```
+
+(The native bridge must expose `verifyBaseCredential` + `describeDisclosure`
+alongside the existing methods. The app-side enumerator in §3 still works if you
+can't take a library bump — but with the built-in API you delete it, the `type`
+rule, and the drop-and-retry entirely.)
